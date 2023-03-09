@@ -22,6 +22,7 @@
      * Source folder to pick the proto files.  PROTO_SRC_FOLDER
      * Destination folder to generate classes  PROTO_OUTPUT_FOLDER
      * ***example*** ' protoc --proto_path=%PROTO_SRC_FOLDER% --plugin=protoc-gen-grpc-java=%PROTO_PLUGIN_PATH% --grpc-java_out=%PROTO_OUTPUT_FOLDER% --java_out=%PROTO_OUTPUT_FOLDER% %PROTO_SRC_FOLDER%/message.proto '
-    ![Output build manually in CMD](https://myoctocat.com/assets/images/base-octocat.svg)
+
+![Output build manually in CMD](https://github.com/JAVA-MSDT/gRPC/blob/main/assets/manualBuild.png)
 
   
