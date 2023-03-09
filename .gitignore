@@ -53,6 +53,7 @@ mvnw.cmd
 /nbdist/
 /.nb-gradle/
 build/
+grpc/output/**
 
 ### VS Code ###
 .vscode/

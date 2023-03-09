@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package message;
+
+option java_package = "com.message.services";
+option java_multiple_files = true;
+
+service MessageService {
+    rpc getMEssage (MessageRequest) returns (MessageResponse);
+}
+
+message MessageRequest{
+    int32 id = 1;
+    string message = 2;
+}
+
+message MessageResponse{
+    int32 id = 1;
+    string message = 2;
+}
