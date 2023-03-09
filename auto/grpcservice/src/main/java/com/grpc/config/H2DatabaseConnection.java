@@ -1,4 +1,4 @@
-package com.grpc.db;
+package com.grpc.config;
 
 import org.h2.tools.RunScript;
 import org.h2.tools.Server;
