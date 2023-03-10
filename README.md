@@ -25,4 +25,6 @@
 
 ![Output build manually in CMD](https://github.com/JAVA-MSDT/gRPC/blob/main/assets/manualBuild.png)
 
+Using [bloomrpc](https://github.com/bloomrpc/bloomrpc/releases) for server testing
+
   
