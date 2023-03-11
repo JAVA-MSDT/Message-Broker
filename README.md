@@ -18,6 +18,11 @@
    * Rnu the Server project first from the MainServer main.
    * Run the Client project second from the MainClinet file.
    * Check the console you should find message displayed in the server console in this pattern 'INFO: Response Message:: Pong'
+#### Run only server
+   * If you want to run the server only witghout the client,  you can download [BloomRPC](https://github.com/bloomrpc/bloomrpc/releases)
+   * Then run the BloomRPC locally, and make sure that you use localhost:port-of-server
+   * from BloomRPC select the proto file from the proto module, then run
+   
    
 
   
