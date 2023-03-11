@@ -1,4 +1,4 @@
-### Task ***gRPC part*** 
+### Task ***gRPC part*** (2 point) 
 #### Description
 
 * Create a simple gRPC server application that listens on port 8080 for a request like this (feel free to add more fields)
@@ -10,21 +10,14 @@
 * Start a server and try to communicate with it using the clients you just wrote.
 
 #### Solution
-##### Requierd Softwares
-  * Download the latest version of [protoc compiler package](https://github.com/protocolbuffers/protobuf/releases) as zip file
-  * Download the latest version of [Protoc Gen GRPC Java](https://mvnrepository.com/artifact/io.grpc/protoc-gen-grpc-java) as executable file
-  * Set the protoc compiler in the PATH environment variable for your system for me i unziped the protoc compiler package under C:\Users\Public\Tools\grpc\
+##### Project Structure
+  * It's a multi module project (Client to call the Server and proto to generate the proto stubs for the communication between Client and Server).
 
 #### To run the App
-##### Manual
-   * Run protoc command by providing the following "Sett them as environment variable in your sustem to avoid typo issues"
-     * Plugin.EXE path.                        PROTO_PLUGIN_PATH
-     * Source folder to pick the proto files.  PROTO_SRC_FOLDER
-     * Destination folder to generate classes  PROTO_OUTPUT_FOLDER
-     * ***example*** ' protoc --proto_path=%PROTO_SRC_FOLDER% --plugin=protoc-gen-grpc-java=%PROTO_PLUGIN_PATH% --grpc-java_out=%PROTO_OUTPUT_FOLDER% --java_out=%PROTO_OUTPUT_FOLDER% %PROTO_SRC_FOLDER%/message.proto '
-
-![Output build manually in CMD](https://github.com/JAVA-MSDT/gRPC/blob/main/assets/manualBuild.png)
-
-Using [bloomrpc](https://github.com/bloomrpc/bloomrpc/releases) for server testing
+   * From the root where is the pom parent file exist, run this maven command mvn clean install.
+   * Rnu the Server project first from the MainServer main.
+   * Run the Client project second from the MainClinet file.
+   * Check the console you should find message displayed in the server console in this pattern 'INFO: Response Message:: Pong'
+   
 
   
