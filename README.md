@@ -1,4 +1,4 @@
-### Task ***gRPC part*** (2 point) 
+### Task ***gRPC part*** 
 #### Description
 
 * Create a simple gRPC server application that listens on port 8080 for a request like this (feel free to add more fields)
