@@ -18,12 +18,12 @@ public class MessageClient {
         this.stub = MessageServiceGrpc.newBlockingStub(channel);
     }
 
-    public void sendMessage() {
+    public void receiveMessage() {
         MessageRequest request = MessageRequest.newBuilder()
                 .setMessage(MESSAGE)
                 .setTimestamp(System.currentTimeMillis())
                 .build();
-        MessageResponse response = stub.receiveMessage(request);
+        MessageResponse response = stub.sendMessage(request);
         LOGGER.log(Level.INFO, "Response Message:: {0}", response.getMessage());
     }
 

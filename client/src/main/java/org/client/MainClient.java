@@ -13,7 +13,7 @@ public class MainClient {
                 .build();
         var client = new MessageClient(channel);
         for (int i = 0; i < 10; i++) {
-            client.sendMessage();
+            client.receiveMessage();
         }
     }
 }

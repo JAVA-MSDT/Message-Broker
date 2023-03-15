@@ -6,7 +6,7 @@ option java_package = "com.message.service";
 option java_multiple_files = true;
 
 service MessageService {
-  rpc receiveMessage(MessageRequest) returns (MessageResponse);
+  rpc sendMessage(MessageRequest) returns (MessageResponse);
 }
 
 message MessageRequest {
