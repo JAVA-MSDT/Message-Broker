@@ -1,9 +1,7 @@
-package org.javamsdt.producer;
+package org.javamsdt.consumer.producer;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.Instant;
-import java.time.ZoneId;
 import java.util.Properties;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -12,12 +10,12 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ProducerWithKey {
+public class Producer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProducerWithKey.class.getSimpleName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Producer.class.getSimpleName());
 
     public static void main(String[] args) {
-        LOGGER.info("Producer with a key Started .....");
+        LOGGER.info("Producer Started .....");
 
         // Producer Properties
         Properties properties = getKafkaProperties();
@@ -28,26 +26,10 @@ public class ProducerWithKey {
         KafkaProducer<String, String> producer = getKafkaProducer(properties);
 
         // Producer Record
+        ProducerRecord<String, String> producerRecord = new ProducerRecord<>("demo_java", "Producer");
 
         // Send data
-        for (int o = 0; o < 2; o++) {
-
-            for (int i = 0; i < 10; i++) {
-                String topic = "demo_java";
-                String key = "id_" + i;
-                String value = "Producer with a key #" + i;
-                ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topic, key, value);
-                producer.send(producerRecord, (recordMetadata, e) -> {
-                    // executed every time a record sent.
-                    if (e == null) {
-                        LOGGER.info(
-                                "Received new metadata::" + ", Key: " + key + ", Partition: " + recordMetadata.partition());
-                    } else {
-                        LOGGER.error("Error while producing:: ", e);
-                    }
-                });
-            }
-        }
+        producer.send(producerRecord);
 
         // flush & close the producer
         producer.flush();
@@ -56,7 +38,7 @@ public class ProducerWithKey {
 
     private static Properties getKafkaProperties() {
         Properties properties = new Properties();
-        try (InputStream input = ProducerWithKey.class.getClassLoader().getResourceAsStream("kafka.properties")) {
+        try (InputStream input = Producer.class.getClassLoader().getResourceAsStream("kafka.properties")) {
 
             if (input == null) {
                 System.out.println("Sorry, unable to find config.properties");

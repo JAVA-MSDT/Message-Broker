@@ -1,27 +1,21 @@
-package org.javamsdt.producer;
+package org.javamsdt.consumer.producer;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.Properties;
 
-import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ProducerWithCallBack {
+public class ProducerWithKey {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProducerWithCallBack.class.getSimpleName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProducerWithKey.class.getSimpleName());
 
     public static void main(String[] args) {
-        LOGGER.info("Producer Call Back Started .....");
+        LOGGER.info("Producer with a key Started .....");
 
         // Producer Properties
         Properties properties = getKafkaProperties();
@@ -34,22 +28,23 @@ public class ProducerWithCallBack {
         // Producer Record
 
         // Send data
-        for (int i = 0; i < 10; i++) {
-            ProducerRecord<String, String> producerRecord = new ProducerRecord<>("demo_java",
-                    "Producer Call Back #" + i);
-            producer.send(producerRecord, (recordMetadata, e) -> {
-                // executed every time a record sent.
-                if (e == null) {
-                    LOGGER.info("Received new metadata:: \n" +
-                            "Topic: " + recordMetadata.topic() + "\n" +
-                            "Partition: " + recordMetadata.partition() + "\n" +
-                            "Offset: " + recordMetadata.offset() + "\n" +
-                            "Timestamp: " + Instant.ofEpochMilli(recordMetadata.timestamp())
-                            .atZone(ZoneId.systemDefault()).toLocalDateTime());
-                } else {
-                    LOGGER.error("Error while producing:: ", e);
-                }
-            });
+        for (int o = 0; o < 2; o++) {
+
+            for (int i = 0; i < 10; i++) {
+                String topic = "demo_java";
+                String key = "id_" + i;
+                String value = "Producer with a key #" + i;
+                ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topic, key, value);
+                producer.send(producerRecord, (recordMetadata, e) -> {
+                    // executed every time a record sent.
+                    if (e == null) {
+                        LOGGER.info(
+                                "Received new metadata::" + ", Key: " + key + ", Partition: " + recordMetadata.partition());
+                    } else {
+                        LOGGER.error("Error while producing:: ", e);
+                    }
+                });
+            }
         }
 
         // flush & close the producer
@@ -59,7 +54,7 @@ public class ProducerWithCallBack {
 
     private static Properties getKafkaProperties() {
         Properties properties = new Properties();
-        try (InputStream input = ProducerWithCallBack.class.getClassLoader().getResourceAsStream("kafka.properties")) {
+        try (InputStream input = ProducerWithKey.class.getClassLoader().getResourceAsStream("kafka.properties")) {
 
             if (input == null) {
                 System.out.println("Sorry, unable to find config.properties");

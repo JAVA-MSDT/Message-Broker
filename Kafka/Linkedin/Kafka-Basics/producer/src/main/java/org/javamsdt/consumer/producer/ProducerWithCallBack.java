@@ -1,7 +1,9 @@
-package org.javamsdt.producer;
+package org.javamsdt.consumer.producer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.Properties;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -10,12 +12,12 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Producer {
+public class ProducerWithCallBack {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Producer.class.getSimpleName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProducerWithCallBack.class.getSimpleName());
 
     public static void main(String[] args) {
-        LOGGER.info("Producer Started .....");
+        LOGGER.info("Producer Call Back Started .....");
 
         // Producer Properties
         Properties properties = getKafkaProperties();
@@ -26,10 +28,25 @@ public class Producer {
         KafkaProducer<String, String> producer = getKafkaProducer(properties);
 
         // Producer Record
-        ProducerRecord<String, String> producerRecord = new ProducerRecord<>("demo_java", "Producer");
 
         // Send data
-        producer.send(producerRecord);
+        for (int i = 0; i < 10; i++) {
+            ProducerRecord<String, String> producerRecord = new ProducerRecord<>("demo_java",
+                    "Producer Call Back #" + i);
+            producer.send(producerRecord, (recordMetadata, e) -> {
+                // executed every time a record sent.
+                if (e == null) {
+                    LOGGER.info("Received new metadata:: \n" +
+                            "Topic: " + recordMetadata.topic() + "\n" +
+                            "Partition: " + recordMetadata.partition() + "\n" +
+                            "Offset: " + recordMetadata.offset() + "\n" +
+                            "Timestamp: " + Instant.ofEpochMilli(recordMetadata.timestamp())
+                            .atZone(ZoneId.systemDefault()).toLocalDateTime());
+                } else {
+                    LOGGER.error("Error while producing:: ", e);
+                }
+            });
+        }
 
         // flush & close the producer
         producer.flush();
@@ -38,7 +55,7 @@ public class Producer {
 
     private static Properties getKafkaProperties() {
         Properties properties = new Properties();
-        try (InputStream input = Producer.class.getClassLoader().getResourceAsStream("kafka.properties")) {
+        try (InputStream input = ProducerWithCallBack.class.getClassLoader().getResourceAsStream("kafka.properties")) {
 
             if (input == null) {
                 System.out.println("Sorry, unable to find config.properties");
