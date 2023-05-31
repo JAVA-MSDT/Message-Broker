@@ -84,7 +84,7 @@ public class ConsumerWithShutdown {
         try (InputStream input = ConsumerWithShutdown.class.getClassLoader().getResourceAsStream("kafka.properties")) {
 
             if (input == null) {
-                System.out.println("Sorry, unable to find config.properties");
+                LOGGER.error("Sorry, unable to find config.properties");
             }
             properties.load(input);
             LOGGER.info("Bootstrap Server: " + properties.getProperty("bootstrap.servers"));
