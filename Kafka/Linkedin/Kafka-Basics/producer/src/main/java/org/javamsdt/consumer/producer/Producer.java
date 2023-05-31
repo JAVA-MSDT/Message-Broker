@@ -19,8 +19,6 @@ public class Producer {
 
         // Producer Properties
         Properties properties = getKafkaProperties();
-        properties.put("key.serializer", StringSerializer.class.getName());
-        properties.put("value.serializer", StringSerializer.class.getName());
 
         // Producer
         KafkaProducer<String, String> producer = getKafkaProducer(properties);

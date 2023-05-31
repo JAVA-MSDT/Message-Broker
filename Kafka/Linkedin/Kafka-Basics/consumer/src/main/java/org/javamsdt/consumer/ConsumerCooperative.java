@@ -22,18 +22,9 @@ public class ConsumerCooperative {
     public static void main(String[] args) {
         LOGGER.info("Consumer with Shutdown Started .....");
 
-        String groupId = "java-app";
         String topic = "demo_java";
         // Consumer Properties
         Properties properties = getKafkaProperties();
-        // Deserializing depends on the data consumed
-        properties.put("key.deserializer", StringDeserializer.class.getName());
-        properties.put("value.deserializer", StringDeserializer.class.getName());
-        properties.put("group.id", groupId);
-        // none: if there is no consumer group will fail (We must set the consumer group before starting the app).
-        // earliest: read from the beginning of my topic.
-        // latest: read the new messages from now.
-        properties.put("auto.offset.reset", "earliest");
         properties.put("partition.assignment.strategy", CooperativeStickyAssignor.class.getName());
 
         // Consumer
