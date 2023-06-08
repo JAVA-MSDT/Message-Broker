@@ -9,5 +9,8 @@ spring:
         mechanism: PLAIN
         jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="4lbHUhNoYdXGyHQOaWurD7" password="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2F1dGguY29uZHVrdG9yLmlvIiwic291cmNlQXBwbGljYXRpb24iOiJhZG1pbiIsInVzZXJNYWlsIjpudWxsLCJwYXlsb2FkIjp7InZhbGlkRm9yVXNlcm5hbWUiOiI0bGJIVWhOb1lkWEd5SFFPYVd1ckQ3Iiwib3JnYW5pemF0aW9uSWQiOjczNDg0LCJ1c2VySWQiOjg1NDQ5LCJmb3JFeHBpcmF0aW9uQ2hlY2siOiI1MDA4OTgyMy04YjI0LTQ0MDUtYjQ1ZS0zMDIxZGZhZjlkNGYifX0.hn1MgfKue_RsMGfJyNDEl_JYg7TUmFyjhhYOajIlYK4";
     producer-string:
-      topic-name: demo_java
+      topic-name: wikimedia.recent.change
       group-id: java-app
+event:
+  handler:
+    url: https://stream.wikimedia.org/v2/stream/recentchange
