@@ -17,8 +17,9 @@ public class WikimediaConsumerApplication implements ApplicationRunner {
     private final ProducerService producerService;
     private final EventSource eventSource;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         SpringApplication.run(WikimediaConsumerApplication.class, args);
+
     }
 
     @Override
@@ -27,7 +28,7 @@ public class WikimediaConsumerApplication implements ApplicationRunner {
         System.out.println(" ========================== ");
         eventSource.messages().forEach(messageEvent -> producerService.sendMessage(messageEvent.getData()));
         eventSource.start();
-        TimeUnit.MINUTES.sleep(1);
+        TimeUnit.SECONDS.sleep(10);
 
 
     }
