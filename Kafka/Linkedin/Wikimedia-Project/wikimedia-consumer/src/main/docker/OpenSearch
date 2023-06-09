@@ -1,0 +1,13 @@
+- After running open search from docker-compose.
+- Find the dev tool in open search dashboard.
+- From the console run the following commands.
+    - GET / # To check that the server running.
+    - To Create first index:
+        - PUT /my-first-index
+    - To create a doc with id 1
+        - PUT /my-first-index/_doc/1
+          {"Description": "First document in open search"}
+    - To get the doc you have just added it.
+        - GET /my-first-index/_doc/1
+    - To delete the doc you have just added it.
+        - DELETE /my-first-index/_doc/1
