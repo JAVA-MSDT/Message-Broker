@@ -1,16 +1,35 @@
 package com.javamsdt.wikimediaconsumer;
 
-import com.javamsdt.wikimediaconsumer.service.ConsumerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.javamsdt.wikimediaconsumer.configuration.OpenSearchDBConfiguration;
+import lombok.RequiredArgsConstructor;
+import org.opensearch.client.RequestOptions;
+import org.opensearch.client.RestHighLevelClient;
+import org.opensearch.client.indices.GetIndexRequest;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class WikimediaConsumerApplication {
+@RequiredArgsConstructor
+public class WikimediaConsumerApplication implements ApplicationRunner {
 
-	public static void main(String[] args) {
-		SpringApplication.run(WikimediaConsumerApplication.class, args);
-		System.out.println("Started....");
-	}
+    private final OpenSearchDBConfiguration openSearchDBConfiguration;
+    @Value("${opensearch.db.index.name}")
+    private String indexName;
+
+    public static void main(String[] args) {
+        SpringApplication.run(WikimediaConsumerApplication.class, args);
+    }
+
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        RestHighLevelClient restHighLevelClient = openSearchDBConfiguration.restHighLevelClient();
+        System.out.println("Is Exist: " + openSearchDBConfiguration.isIndexExists(restHighLevelClient, indexName));
+        openSearchDBConfiguration.createIndexRequest(restHighLevelClient);
+        System.out.println("Is Exist: " + openSearchDBConfiguration.isIndexExists(restHighLevelClient, indexName));
+
+    }
 
 }

@@ -11,3 +11,7 @@ spring:
     consumer-string:
       topic-name: demo_java
       group-id: java-app
+opensearch:
+  db:
+    url: http://localhost:9200
+    index.name: wikimedia
