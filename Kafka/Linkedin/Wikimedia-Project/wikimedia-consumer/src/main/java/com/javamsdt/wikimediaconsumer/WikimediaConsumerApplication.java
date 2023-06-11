@@ -16,8 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class WikimediaConsumerApplication implements ApplicationRunner {
 
     private final OpenSearchDBConfiguration openSearchDBConfiguration;
-    @Value("${opensearch.db.index.name}")
-    private String indexName;
+    private final RestHighLevelClient restHighLevelClient;
 
     public static void main(String[] args) {
         SpringApplication.run(WikimediaConsumerApplication.class, args);
@@ -25,11 +24,7 @@ public class WikimediaConsumerApplication implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        RestHighLevelClient restHighLevelClient = openSearchDBConfiguration.restHighLevelClient();
-        System.out.println("Is Exist: " + openSearchDBConfiguration.isIndexExists(restHighLevelClient, indexName));
         openSearchDBConfiguration.createIndexRequest(restHighLevelClient);
-        System.out.println("Is Exist: " + openSearchDBConfiguration.isIndexExists(restHighLevelClient, indexName));
-
     }
 
 }

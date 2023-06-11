@@ -7,12 +7,14 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultConnectionKeepAliveStrategy;
+import org.opensearch.action.index.IndexRequest;
 import org.opensearch.client.RequestOptions;
 import org.opensearch.client.RestClient;
 import org.opensearch.client.RestHighLevelClient;
 import org.opensearch.client.indices.CreateIndexRequest;
 import org.opensearch.client.indices.GetIndexRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
@@ -27,6 +29,7 @@ public class OpenSearchDBConfiguration {
     @Value("${opensearch.db.index.name}")
     private String indexName;
 
+    @Bean
     public RestHighLevelClient restHighLevelClient() {
         RestHighLevelClient restHighLevelClient;
         URI uri = URI.create(dbUrl);
@@ -51,10 +54,12 @@ public class OpenSearchDBConfiguration {
 
     public void createIndexRequest(RestHighLevelClient restHighLevelClient) {
         try {
-            boolean isIndexExist = restHighLevelClient.indices().exists(new GetIndexRequest(indexName), RequestOptions.DEFAULT);
+            boolean isIndexExist = isIndexExists(restHighLevelClient, indexName);
             if (!isIndexExist) {
                 restHighLevelClient.indices().create(new CreateIndexRequest(indexName), RequestOptions.DEFAULT);
                 log.info(String.format("Done creating Index: %s successfully.", indexName));
+            } else {
+                log.info(String.format("Index: %s is already exists.", indexName));
             }
         } catch (IOException e) {
             log.error("Error creating index:: ", e);
@@ -69,5 +74,9 @@ public class OpenSearchDBConfiguration {
             log.error(String.format("Error checking the existence of Index:: %s", indexName), e);
             throw new RuntimeException(e);
         }
+    }
+
+    public IndexRequest indexRequest() {
+        return new IndexRequest(indexName);
     }
 }
