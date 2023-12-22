@@ -1,0 +1,32 @@
+spring:
+  rabbitmq:
+    virtual-host: 8-stream-function-queue-stream
+  cloud:
+    stream:
+      function:
+        definition: streamSink1;streamSink2
+      bindings:
+        streamSink1-in-0:
+          destination: demo-exchange
+          group: demo-queue-stream
+        streamSink2-in-0:
+          destination: demo-exchange
+          group: demo-queue-stream
+        source-out-0:
+          destination: demo-queue-stream
+      rabbit:
+        bindings:
+          streamSink1-in-0:
+            consumer:
+              containerType: STREAM
+              queueNameGroupOnly: true
+              declareExchange: false
+          streamSink2-in-0:
+            consumer:
+              containerType: STREAM
+              queueNameGroupOnly: true
+              declareExchange: false
+          source-out-0:
+            producer:
+              producerType: STREAM_SYNC
+              declareExchange: false
