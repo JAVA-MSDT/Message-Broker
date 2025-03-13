@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package message;
+
+option java_package = "com.message.service";
+option java_multiple_files = true;
+
+service MessageService {
+  rpc sendMessage(MessageRequest) returns (MessageResponse);
+}
+
+message MessageRequest {
+  string message = 1;
+  int64 timestamp = 2;
+}
+message MessageResponse {
+  string message = 1;
+  int64 timestamp = 2;
+}
